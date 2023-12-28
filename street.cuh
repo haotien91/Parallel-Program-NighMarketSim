@@ -1,5 +1,4 @@
 #include "global.cuh"
-#include "main.cuh"
 
 #define MAP_SIZE 64
 

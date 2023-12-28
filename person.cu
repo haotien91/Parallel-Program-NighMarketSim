@@ -10,14 +10,14 @@ person::person(int direction,pos position,int speed)
     return ;
 }
 
-void 
-person::walk(street s)
+__device__ void 
+person::walk(int * Dstreetmap)
 {
     return ;
 }
 
-bool
-person::is_walkable(street s)
+__device__ bool
+person::is_walkable(int * Dstreetmap)
 {
     return true;
 }

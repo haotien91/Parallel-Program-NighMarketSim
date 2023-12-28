@@ -6,7 +6,7 @@ CXXFLAGS = -O3
 CXXFLAGS +=-fopenmp
 
 OUT:= Run
-MAIN:= functions.o  IO.o main.o person.o street.o
+MAIN:= functions.o  main.o person.o street.o
 
 %.o:%.cu %.cuh
 	nvcc $(NVFLAGS) $(LDFLAGS) -c $< -o $@

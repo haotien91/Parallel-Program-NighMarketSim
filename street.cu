@@ -4,18 +4,26 @@ void
 street::Load_map(char *infile)
 {
     FILE *file = fopen(infile, "rb");
+    int inp_size = MAP_SIZE / SCALE_SIZE; 
 
-    int tmp[MAP_SIZE / SCALE_SIZE][MAP_SIZE / SCALE_SIZE];
 
-    for (int i = 0; i < MAP_SIZE / SCALE_SIZE; i++)
+
+    int * tmp = (int*)malloc(inp_size *inp_size);
+
+    for (int i = 0; i < inp_size; i++)
     {
-        fread(&tmp[i], sizeof(int), MAP_SIZE / SCALE_SIZE, file);
+        fread(&tmp, sizeof(int), inp_size * inp_size, file);
     }
 
-    for (int i = 0; i < MAP_SIZE / SCALE_SIZE; i++)
-    {
-        for (int j = 0; j < MAP_SIZE / SCALE_SIZE; j++)
-        {
-        }
-    }
+    // throw to gpu 
+
+    cudaMalloc((void**)&Dstreetmap, inp_size *inp_size * sizeof(int));
+    cudaMemcpy(Dstreetmap, tmp , inp_size *inp_size * sizeof(int) , cudaMemcpyHostToDevice);
+}
+
+void 
+street::Output_map(char *outfile)
+{
+    return ;
+   
 }

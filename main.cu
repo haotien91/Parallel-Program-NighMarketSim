@@ -12,11 +12,15 @@ int main(int argc, char **argv)
     Playground.Load_map(input_filename);
 
     // FOR loop RUN simulator
-    for(int i = 0 ; i < PHASES ; i++)
-    {
-        run<<<1,1>>>();
-        output(output_filename);
-    }
+    // set<<<>>>()
+    run<<<1,1>>>();
+    // For : when run finish a phase , trigger event
+    Playground.Output_map(output_filename);
+   
+
+    // shutdown run 
+    
+    // free memory
 
     return;
 }

@@ -14,9 +14,9 @@ public:
     int speed;
     bool out_of_bound;
 
-    void walk(street s);
+    __device__ void walk(int * Dstreetmap);
 
-    bool is_walkable(street s);
+    __device__ bool is_walkable(int * Dstreetmap);
 
 private:
 };

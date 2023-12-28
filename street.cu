@@ -1,7 +1,7 @@
-#include "global.cuh"
 #include "street.cuh"
 
-void street::Load_map(char *infile)
+void 
+street::Load_map(char *infile)
 {
     FILE *file = fopen(infile, "rb");
 

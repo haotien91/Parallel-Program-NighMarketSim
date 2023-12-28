@@ -1,3 +1,4 @@
+#include "person.cuh"
 
 person::person(int direction,pos position,int speed)
 {
@@ -18,5 +19,5 @@ person::walk(street s)
 bool
 person::is_walkable(street s)
 {
-    return ;
+    return true;
 }

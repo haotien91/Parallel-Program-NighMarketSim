@@ -1,3 +1,6 @@
+#ifndef PERSON_H_INCLUDED
+#define PERSON_H_INCLUDED
+
 #include "global.cuh"
 #include "street.cuh"
 
@@ -17,3 +20,5 @@ public:
 
 private:
 };
+
+#endif 

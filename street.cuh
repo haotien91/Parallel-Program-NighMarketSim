@@ -1,6 +1,7 @@
-#include "global.cuh"
+#ifndef STREET_H_INCLUDED
+#define STREET_H_INCLUDED
 
-#define MAP_SIZE 64
+#include "global.cuh"
 
 class street
 {
@@ -15,9 +16,11 @@ public:
             streetmap[i] = new int[MAP_SIZE]; // create an 64x64 map
         }
     }
-    void Load_map(int *infile);
+    void Load_map(char *infile);
 
     int **streetmap;
 
 private:
 };
+
+#endif 

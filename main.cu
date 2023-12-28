@@ -6,17 +6,17 @@ int main(int argc, char **argv)
     char *output_filename = argv[2];
 
     // Initialize objects
-    street Playground();
+    street Playground;
 
     // Handle Input
+    Playground.Load_map(input_filename);
 
     // FOR loop RUN simulator
-
-    // append output to output file
-
-    FILE *FH = fopen(output_filename, "w");
-    // fwrite
-    fclose(FH);
+    for(int i = 0 ; i < PHASES ; i++)
+    {
+        run<<<1,1>>>();
+        output(output_filename);
+    }
 
     return;
 }

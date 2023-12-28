@@ -1,20 +1,20 @@
 #include "global.cuh"
 #include "street.cuh"
 
-void street::Read_map(int *infile)
+void street::Load_map(char *infile)
 {
     FILE *file = fopen(infile, "rb");
 
-    int tmp[16][16];
+    int tmp[MAP_SIZE / SCALE_SIZE][MAP_SIZE / SCALE_SIZE];
 
-    for (int i = 0; i < 16; i++)
+    for (int i = 0; i < MAP_SIZE / SCALE_SIZE; i++)
     {
-        fread(&tmp[i], sizeof(int), 16, file);
+        fread(&tmp[i], sizeof(int), MAP_SIZE / SCALE_SIZE, file);
     }
 
-    for (int i = 0; i < MAP_SIZE; i++)
+    for (int i = 0; i < MAP_SIZE / SCALE_SIZE; i++)
     {
-        for (int j = 0; j < MAP_SIZE; j++)
+        for (int j = 0; j < MAP_SIZE / SCALE_SIZE; j++)
         {
         }
     }

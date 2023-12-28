@@ -1,20 +1,19 @@
-#include"global.cuh"
-
+#include "global.cuh"
+#include "street.cuh"
 
 class person
 {
-    public:
-        person(int direction,pos position,int speed);
-        
-        int direction ; 
-        int position;
-        int speed; 
-        bool out_of_bound;
+public:
+    person(int direction, pos position, int speed);
 
-        void walk(street s);
+    int direction;
+    int position;
+    int speed;
+    bool out_of_bound;
 
-        bool is_walkable(street s);
+    void walk(street s);
 
-    private:
+    bool is_walkable(street s);
 
+private:
 };

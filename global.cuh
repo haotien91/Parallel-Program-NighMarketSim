@@ -1,3 +1,7 @@
+#ifndef GLOBAL_H_INCLUDED
+#define GLOBAL_H_INCLUDED
+
+
 #include <iostream>
 #include <stdio.h>
 #include <cstdlib>
@@ -13,6 +17,7 @@
 #define RIGHT 3
 #define MAP_SIZE 64 // 4n
 #define SCALE_SIZE 2
+#define PHASES 10
 #define POSITION(x, y, k) ((y) * (k) + (x))
 
 struct pos
@@ -20,3 +25,5 @@ struct pos
     int x;
     int y;
 };
+
+#endif

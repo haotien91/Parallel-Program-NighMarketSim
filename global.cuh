@@ -6,4 +6,15 @@
 #include <cuda_runtime.h>
 #include <vector_types.h>
 #include <omp.h>
-#include"main.cuh"
+
+
+#define UP 0
+#define DOWN 1
+#define LEFT 2
+#define RIGHT 3
+
+typedef struct _pos
+{
+    int x; 
+    int y;
+}pos;

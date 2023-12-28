@@ -1,2 +1,11 @@
 #include"global.cuh"
-#include"main.cuh"
+#include"street.cuh"
+
+__global__ void run();
+
+
+
+
+    
+    
+  

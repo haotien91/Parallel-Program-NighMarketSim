@@ -1,2 +1,7 @@
 #include"global.cuh"
-#include"main.cuh"
+
+
+
+void input();
+
+void output();

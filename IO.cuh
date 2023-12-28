@@ -1,6 +1,6 @@
-#include"global.cuh"
-
-
+#include "global.cuh"
+#include "street.cuh"
+#include "main.cuh"
 
 void input();
 

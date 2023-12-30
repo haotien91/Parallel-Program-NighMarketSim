@@ -2,11 +2,13 @@
 #define FUNCTIONS_H_INCLUDED
 
 #include "global.cuh"
-#include "street.cuh"
 
-__device__ int *  Scaled_map;
+
+__device__ map *  Scaled_map;
 __device__ void scale_map(int * Dstreetmap);
+__device__ void check_conflict();
+__device__ void output_map();
 __global__ void set(int * Dstreetmap);
-__global__ void run();
+__global__ void run(int * Dstreetmap);
 
 #endif

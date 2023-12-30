@@ -7,9 +7,11 @@
 #include <cstdlib>
 #include <cassert>
 #include <cuda.h>
+#include <random>
 #include <cuda_runtime.h>
 #include <vector_types.h>
 #include <omp.h>
+
 
 #define UP 0
 #define DOWN 1
@@ -20,10 +22,33 @@
 #define PHASES 10
 #define POSITION(x, y, k) ((y) * (k) + (x))
 
+
+
 struct pos
 {
     int x;
     int y;
 };
+
+struct preference
+{
+    int up ; 
+    int down;
+    int left;
+    int right;
+    __device__ int choose();
+};
+
+
+
+class map
+{
+    public:
+        map();
+        bool vis ; 
+        void * buffer[4];
+};
+
+
 
 #endif

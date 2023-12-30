@@ -7,12 +7,13 @@
 class person
 {
 public:
-    person(int direction, pos position, int speed);
+    person(int direction, pos position, int speed,preference p);
 
     int direction;
     int position;
     int speed;
     bool out_of_bound;
+    preference p;
 
     __device__ void walk(int * Dstreetmap);
 

@@ -6,11 +6,13 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <cassert>
+#include <ctime>
 #include <cuda.h>
 #include <random>
 #include <cuda_runtime.h>
 #include <vector_types.h>
 #include <omp.h>
+
 
 
 #define UP 0
@@ -20,18 +22,31 @@
 #define MAP_SIZE 64 // 4n
 #define SCALE_SIZE 2
 #define PHASES 10
-#define C(x, y, k) ((y) * (k) + (x))
+#define C(i,j,k) (((j)*(k))+(i))
+#define NUMOFPEOPLE 20
 
 
 
 struct pos
 {
+    pos(int x,int y)
+    {
+        x = x ;
+        y = y ;
+    }
     int x;
     int y;
 };
 
 struct preference
 {
+    preference(int up,int down,int left,int right)
+    {
+        up = up ;
+        down = down ; 
+        left = left ; 
+        right = right;
+    }
     int up ; 
     int down;
     int left;
@@ -45,7 +60,7 @@ class map
 {
     public:
         map();
-        bool vis ; 
+        int vis ; 
         person * buffer[4];
 };
 

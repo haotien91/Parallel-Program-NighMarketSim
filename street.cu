@@ -7,29 +7,32 @@ void street::Load_map(char *infilename)
 
 
 
-    int * tmp = (int*)malloc(inp_size *inp_size);
+    streetmap = (int*)malloc(inp_size *inp_size);
+    Outputmap = (int*)malloc(MAP_SIZE * MAP_SIZE);
 
     for (int i = 0; i < inp_size; i++)
     {
-        fread(&tmp, sizeof(int), inp_size * inp_size, file);
+        fread(&streetmap, sizeof(int), inp_size * inp_size, file);
     }
 
     // throw to gpu
 
     cudaMalloc((void**)&Dstreetmap, inp_size *inp_size * sizeof(int));
-    cudaMemcpy(Dstreetmap, tmp , inp_size *inp_size * sizeof(int) , cudaMemcpyHostToDevice);
+    cudaMemcpy(Dstreetmap, streetmap , inp_size *inp_size * sizeof(int) , cudaMemcpyHostToDevice);
+
+    cudaMalloc((void**)&Dscaled_map, MAP_SIZE * MAP_SIZE * sizeof(map));
+    cudaMalloc((void**)&DOutput_map, MAP_SIZE * MAP_SIZE * sizeof(Outputmap));
 }
 
 void street::Output_map(char *outfilename)
 {
+    
+    cudaMemcpy(Output_map, DOutput_map , sizeof(Output_map) , cudaMemcpyDeviceToHost);
+
     // if a phase is ended. output current map.
-
     FILE *outfile = fopen(outfilename, "ab");
-    int inp_size = MAP_SIZE / SCALE_SIZE;
 
-    for (int i = 0; i < inp_size; i++)
-    {
-    }
+    fwrite(&Outputmap, sizeof(int), MAP_SIZE * MAP_SIZE, outfile );
 
     fclose(outfile);
 

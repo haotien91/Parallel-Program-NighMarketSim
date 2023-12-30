@@ -14,10 +14,13 @@ public:
     int speed;
     bool out_of_bound;
     preference p;
+    pos next_position;
 
-    __device__ void walk(int * Dstreetmap);
+    __device__ void decide(map * Dscaled_map);
+    __device__ void walk(map * Dscaled_map);
+    __device__ void walk_back(map * Dscaled_map);
 
-    __device__ bool is_walkable(int * Dstreetmap,pos position);
+    __device__ bool is_walkable(map * Dscaled_map,pos position);
 
 private:
 };

@@ -21,7 +21,7 @@ int main(int argc, char **argv)
     {
         decide<<<1,1024>>>(Playground.Dscaled_map);
         run<<<1,1024>>>(Playground.Dscaled_map);
-        check<<<1,1024>>>(Playground.Dscaled_map,DOutput_map);
+        check<<<1,1024>>>(Playground.Dscaled_map,Playground.DOutput_map);
 
         // For : when run finish a phase , trigger event
         Playground.Output_map(output_filename);

@@ -40,6 +40,8 @@ __global__ void set(int * Dstreetmap,map * Dscaled_map)
 
         int direction = LEFT;
         preference prefer(4,4,90,2);
+       // prefer.set_preference(4,4,90,2);
+
         p = new person(direction,position,1,prefer);
         Dscaled_map[C(position.x,position.y,MAP_SIZE)].vis = direction;
         Dscaled_map[C(position.x,position.y,MAP_SIZE)].buffer[direction] = p ;  
@@ -49,8 +51,8 @@ __global__ void set(int * Dstreetmap,map * Dscaled_map)
     return ;
 }
 
-void
-__global__ decide(map * Dscaled_map)
+
+__global__ void decide(map * Dscaled_map)
 {
     pos position((blockIdx.x * blockDim.x + threadIdx.x) , (blockIdx.y * blockDim.y + threadIdx.y) );
 
@@ -63,8 +65,8 @@ __global__ decide(map * Dscaled_map)
 
 }
 
-void
-__global__  run(map * Dscaled_map)
+
+__global__ void run(map * Dscaled_map)
 {
   
     pos position((blockIdx.x * blockDim.x + threadIdx.x) , (blockIdx.y * blockDim.y + threadIdx.y) );
@@ -78,10 +80,9 @@ __global__  run(map * Dscaled_map)
     return ;
 }
 
-void
-__global__ check(map * Dscaled_map,int * DOutput_map)
+
+__global__ void check(map * Dscaled_map,int * DOutput_map)
 {
-    std::srand(std::time(0)); 
 
     pos position((blockIdx.x * blockDim.x + threadIdx.x) , (blockIdx.y * blockDim.y + threadIdx.y) );
     map location = Dscaled_map[C(position.x,position.y,MAP_SIZE)];
@@ -89,15 +90,20 @@ __global__ check(map * Dscaled_map,int * DOutput_map)
     // walk 
     if(location.vis > -1)
     {
-        std::vector<int> tmp ;
+        int tmp[4] ;
+        int counter =0 ;
         for(int i = 0 ; i < 4 ; i++)
         {
             if(location.buffer[i] != NULL)
             {
-                tmp.push_back(i);
+                tmp[counter++] = i ;
             }
         }
-        int random_pos = std::rand() % tmp.size(); 
+
+        curandState state;
+        curand_init(clock64(), counter, 0, &state);
+
+        int random_pos = curand(&state) % counter ; 
         int random_val = tmp[random_pos];
 
         for(int i = 0 ; i < 4 ; i++)

@@ -16,11 +16,12 @@ public:
     }
     ~street()
     {
-        cudaFree(Dstreetmap);
-        cudaFree(Dscaledmap);
-        cudaFree(DOutputmap);
-        free(streetmap);
-        free(Outputmap);
+       cudaFree(Dstreetmap);
+       cudaFree(Dscaled_map);
+       cudaFree(DOutputmap);
+       free(streetmap);
+       free(Outputmap);
+       
     }
     void Load_map(char *infilename);
     void Output_map(char *outfilename);
@@ -30,9 +31,8 @@ public:
 
     int *streetmap;
     int *Dstreetmap;
-    map *Dscaledmap;
-    int *Outputmap;
-    int *DOutputmap;
+    map * Dscaled_map;
+    int *Outputmap, *DOutputmap;
 
 private:
 };

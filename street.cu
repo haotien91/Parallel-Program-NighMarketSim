@@ -18,7 +18,7 @@ void street::Load_map(char *infilename)
     cudaMalloc((void **)&Dstreetmap, inp_size * inp_size * sizeof(int));
     cudaMemcpy(Dstreetmap, streetmap, inp_size * inp_size * sizeof(int), cudaMemcpyHostToDevice);
 
-    cudaMalloc((void **)&Dscaledmap, MAP_SIZE * MAP_SIZE * sizeof(map));
+    cudaMalloc((void **)&Dscaled_map, MAP_SIZE * MAP_SIZE * sizeof(map));
     cudaMalloc((void **)&DOutputmap, MAP_SIZE * MAP_SIZE * sizeof(Outputmap));
 }
 

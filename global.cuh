@@ -7,7 +7,8 @@
 #include <cassert>
 #include <ctime>
 #include <cuda.h>
-#include <random>
+#include <curand.h>
+#include <curand_kernel.h>
 #include <cuda_runtime.h>
 #include <vector_types.h>
 #include <omp.h>
@@ -24,24 +25,19 @@
 
 class pos
 {
-    pos(int x, int y)
-    {
-        x = x;
-        y = y;
-    }
+public:
+    __device__ pos(){return ;};
+    __device__ pos(int x, int y);
     int x;
     int y;
 };
 
 class preference
 {
-    preference(int up, int down, int left, int right)
-    {
-        up = up;
-        down = down;
-        left = left;
-        right = right;
-    }
+public:
+    __device__ preference(){return ;};
+    __device__ preference(int up,int down,int left ,int right) ;
+   
     int up;
     int down;
     int left;
@@ -54,7 +50,7 @@ class person;
 class map
 {
 public:
-    __device__ map::map()
+    __device__ map()
     {
         memset(buffer, 0, sizeof(buffer));
         vis = 0;

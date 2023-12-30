@@ -3,6 +3,8 @@
 
 __device__ void scale_map(int * Dstreetmap)
 {
+    
+
     return;
 }
 __global__ void set(int * Dstreetmap)

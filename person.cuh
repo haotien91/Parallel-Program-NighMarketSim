@@ -7,7 +7,7 @@
 class person
 {
 public:
-    person(int direction, pos position, int speed,preference p);
+    person(int direction, pos position, int speed, preference p);
 
     int direction;
     pos position;
@@ -16,13 +16,13 @@ public:
     preference p;
     pos next_position;
 
-    __device__ void decide(map * Dscaled_map);
-    __device__ void walk(map * Dscaled_map);
-    __device__ void walk_back(map * Dscaled_map);
+    __device__ void decide(map *Dscaled_map);
+    __device__ void walk(map *Dscaled_map);
+    __device__ void walk_back(map *Dscaled_map);
 
-    __device__ bool is_walkable(map * Dscaled_map,pos position);
+    __device__ bool is_walkable(map *Dscaled_map, pos position);
 
 private:
 };
 
-#endif 
+#endif

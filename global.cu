@@ -1,12 +1,14 @@
-__device__ int
-preference::choose()
+#include "global.cuh"
+
+__device__ int preference::choose()
 {
     // Define weighted probabilities for each direction
     int weights[] = {up, down, left, right}; // Adjust these values for different weights
 
     // Calculate total weight
     int totalWeight = 0;
-    for (int weight : weights) {
+    for (int weight : weights)
+    {
         totalWeight += weight;
     }
 
@@ -17,21 +19,20 @@ preference::choose()
     int randomNum = dis(gen);
 
     // Choose a direction based on weighted probabilities
-    if (randomNum <= weights[0]) {
-        return UP // Up
-    } else if (randomNum <= weights[0] + weights[1]) {
-        return DOWN // Down
-    } else if (randomNum <= weights[0] + weights[1] + weights[2]) {
+    if (randomNum <= weights[0])
+    {
+        return UP; // Up
+    }
+    else if (randomNum <= weights[0] + weights[1])
+    {
+        return DOWN; // Down
+    }
+    else if (randomNum <= weights[0] + weights[1] + weights[2])
+    {
         return LEFT; // Left
-    } else {
+    }
+    else
+    {
         return RIGHT; // Right
     }
-
-}
-
-__device__ void
-map::map()
-{
-    memset(buffer,0,sizeof(buffer));
-    vis = 0 ;
 }

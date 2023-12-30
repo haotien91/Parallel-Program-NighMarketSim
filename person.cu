@@ -1,12 +1,12 @@
 #include "person.cuh"
 
-person::person(int direction,pos position,int speed)
+person::person(int direction,pos position,int speed,preference p)
 {
     direction = direction; 
     position = position;
     speed = speed; 
     out_of_bound = false;
-
+    p = p;
 
     return ;
 }
@@ -14,22 +14,22 @@ person::person(int direction,pos position,int speed)
 __device__ void 
 person::walk(int * Dstreetmap)
 {
-    int choice = choose();
+    int choice = p.choose();
     pos old_position = position;
     switch(choice)
     {
         case UP:
             position.y += speed;
-            break
+            break;
         case DOWN:
             position.y -= speed;
-            break
+            break;
         case LEFT:
             position.x -= speed;
-            break
+            break;
         case RIGHT:
             position.y += speed;
-            break
+            break;
     }
 
     if(!is_walkable(Dstreetmap,position))position = old_position;

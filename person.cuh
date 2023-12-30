@@ -10,14 +10,14 @@ public:
     person(int direction, pos position, int speed,preference p);
 
     int direction;
-    int position;
+    pos position;
     int speed;
     bool out_of_bound;
     preference p;
 
     __device__ void walk(int * Dstreetmap);
 
-    __device__ bool is_walkable(int * Dstreetmap);
+    __device__ bool is_walkable(int * Dstreetmap,pos position);
 
 private:
 };

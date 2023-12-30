@@ -20,7 +20,7 @@
 #define MAP_SIZE 64 // 4n
 #define SCALE_SIZE 2
 #define PHASES 10
-#define POSITION(x, y, k) ((y) * (k) + (x))
+#define C(x, y, k) ((y) * (k) + (x))
 
 
 
@@ -39,14 +39,14 @@ struct preference
     __device__ int choose();
 };
 
-
+class person;
 
 class map
 {
     public:
         map();
         bool vis ; 
-        void * buffer[4];
+        person * buffer[4];
 };
 
 

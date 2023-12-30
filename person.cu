@@ -12,39 +12,51 @@ person::person(int direction,pos position,int speed,preference p)
 }
 
 __device__ void 
-person::walk(int * Dstreetmap)
+person::decide(map * Dscaled_map)
 {
     int choice = p.choose();
-    pos old_position = position;
     switch(choice)
     {
         case UP:
-            position.y += speed;
+            new_position.y = position.y - speed;
             break;
         case DOWN:
-            position.y -= speed;
+            new_position.y = position.y + speed;
             break;
         case LEFT:
-            position.x -= speed;
+            new_position.x =  position.x - speed;
             break;
         case RIGHT:
-            position.y += speed;
+            new_position.x = position.x + speed;
             break;
     }
 
-    if(!is_walkable(Dstreetmap,position))position = old_position;
-    else
-    {
-        // update global memory
-    }
-    
+    if(!is_walkable(Dscaled_map,position))new_position = position;    
+    else direction = choice;
+
     return ;
 }
 
-__device__ bool
-person::is_walkable(int * Dstreetmap,pos position)
+__device__ void
+person::walk(map * Dscaled_map)
 {
-    if (Dstreetmap[C(position.x,position.y,MAP_SIZE)] != 0)return true;
+    // update
+    Dscaled_map[C(next_position.x,next_position.y,MAP_SIZE)].vis = direction;
+    Dscaled_map[C(next_position.x,next_position.y,MAP_SIZE)].buffer[direction] = this;
+}
+
+__device__ void
+person::walk_back(map * Dscaled_map)
+{
+    // update back , just go don't need to check
+    Dscaled_map[C(position.x,position.y,MAP_SIZE)].vis = direction;
+    Dscaled_map[C(position.x,position.y,MAP_SIZE)].buffer[direction] = this;
+}
+
+__device__ bool
+person::is_walkable(map * Dstreetmap,pos position)
+{
+    if (Dstreetmap[C(position.x,position.y,MAP_SIZE)].vis == -1 )return true;
     else return false;
 }
 

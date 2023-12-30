@@ -123,5 +123,12 @@ __global__ check(map * Dscaled_map,int * DOutput_map)
         location.vis = random_val;
         Dscaled_map[C(position.x,position.y,MAP_SIZE)] = location;
     }
+
+    //Delete people if people is out
+    // code here 
+
+    // create people at a rate , if this is a startpoint , (之後再說)
+
+
     output_map( Dscaled_map,DOutput_map,position);
 }

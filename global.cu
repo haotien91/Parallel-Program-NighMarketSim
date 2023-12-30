@@ -13,10 +13,10 @@ __device__ int preference::choose()
     }
 
     // Generate a random number between 1 and total weight
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(1, totalWeight);
-    int randomNum = dis(gen);
+  //  std::random_device rd;
+ //   std::mt19937 gen(rd());
+ //   std::uniform_int_distribution<> dis(1, totalWeight);
+    int randomNum = 0; //NEED TO CHANGE 
 
     // Choose a direction based on weighted probabilities
     if (randomNum <= weights[0])
@@ -35,4 +35,20 @@ __device__ int preference::choose()
     {
         return RIGHT; // Right
     }
+}
+
+
+__device__ preference::preference(int up,int down ,int left ,int right)
+{
+    up = up;
+    down =down ;
+    left =left;
+    right =right;
+}
+
+
+__device__ pos::pos(int x, int y)
+{
+        x = x;
+        y = y;
 }

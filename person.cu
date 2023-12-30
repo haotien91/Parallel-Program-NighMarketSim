@@ -1,6 +1,6 @@
 #include "person.cuh"
 
-person::person(int direction, pos position, int speed, preference p)
+__device__ person::person(int direction, pos position, int speed, preference p)
 {
     direction = direction;
     position = position;
@@ -18,21 +18,21 @@ person::decide(map *Dscaled_map)
     switch (choice)
     {
     case UP:
-        new_position.y = position.y - speed;
+        next_position.y = position.y - speed;
         break;
     case DOWN:
-        new_position.y = position.y + speed;
+        next_position.y = position.y + speed;
         break;
     case LEFT:
-        new_position.x = position.x - speed;
+        next_position.x = position.x - speed;
         break;
     case RIGHT:
-        new_position.x = position.x + speed;
+        next_position.x = position.x + speed;
         break;
     }
 
     if (!is_walkable(Dscaled_map, position))
-        new_position = position;
+        next_position = position;
     else
         direction = choice;
 

@@ -7,7 +7,7 @@
 class person
 {
 public:
-    person(int direction, pos position, int speed, preference p);
+    __device__ person(int direction, pos position, int speed, preference p);
 
     int direction;
     pos position;

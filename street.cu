@@ -8,7 +8,7 @@ street::Load_map(char *infile)
 
 
 
-    int * tmp = (int*)malloc(inp_size *inp_size);
+    int * tmp = (int*)malloc(inp_size * inp_size);
 
     for (int i = 0; i < inp_size; i++)
     {
@@ -17,8 +17,8 @@ street::Load_map(char *infile)
 
     // throw to gpu 
 
-    cudaMalloc((void**)&Dstreetmap, inp_size *inp_size * sizeof(int));
-    cudaMemcpy(Dstreetmap, tmp , inp_size *inp_size * sizeof(int) , cudaMemcpyHostToDevice);
+    cudaMalloc((void**)&Dstreetmap, inp_size * inp_size * sizeof(int));
+    cudaMemcpy(Dstreetmap, tmp , inp_size * inp_size * sizeof(int) , cudaMemcpyHostToDevice);
 }
 
 void 

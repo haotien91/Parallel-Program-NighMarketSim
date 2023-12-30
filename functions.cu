@@ -3,22 +3,27 @@
 
 __device__ void scale_map(int * Dstreetmap)
 {
-
+    return;
 }
-__global__ void set()
+__global__ void set(int * Dstreetmap)
 {
+    // scale map 
+
+    // set people
 
     return ;
 }
 
 
-__global__ void run()
+__global__ void run(int * Dstreetmap)
 {
-    // set people
+    for(int i = 0 ; i < PHASES ; i++)
+    {
+        // walk 
 
-    // walk 
+        // solve conflict
 
-    // solve conflict
-
+        // wait signal
+    }
     return ;
 }

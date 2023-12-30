@@ -12,8 +12,8 @@ int main(int argc, char **argv)
     Playground.Load_map(input_filename);
 
     // FOR loop RUN simulator
-    // set<<<>>>()
-    run<<<1,1>>>();
+    set<<<1,1>>>(Playground.Dstreetmap);
+    run<<<1,1>>>(Playground.Dstreetmap);
     // For : when run finish a phase , trigger event
     Playground.Output_map(output_filename);
    

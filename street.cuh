@@ -10,9 +10,6 @@ public:
     street()
     {
         width = height = MAP_SIZE / SCALE_SIZE;
-        printf("Street Initialized\n");
-
-        streetmap = new int[MAP_SIZE / SCALE_SIZE * MAP_SIZE / SCALE_SIZE]; // create a map
     }
     ~street()
     {

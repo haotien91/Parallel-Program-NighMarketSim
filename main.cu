@@ -34,6 +34,7 @@ int main(int argc, char **argv)
     // free memory
     printf("finished start deleting object \n");
     delete Playground;
+    printf("delete success\n");
     
 
     return;

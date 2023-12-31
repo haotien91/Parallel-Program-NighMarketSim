@@ -8,9 +8,18 @@ void street::Load_map(char *infilename)
     streetmap = (int *)malloc(inp_size * inp_size);
     Outputmap = (int *)malloc(MAP_SIZE * MAP_SIZE);
 
-    for (int i = 0; i < inp_size; i++)
+   
+    fread(streetmap, sizeof(int), inp_size * inp_size, file);
+
+    
+    for(int i =0 ; i< inp_size ;i++)
     {
-        fread(&streetmap, sizeof(int), inp_size * inp_size, file);
+        for(int j = 0 ; j< inp_size ; j++)
+        {
+            printf("%d ",streetmap[C(j,i,inp_size)]);
+ 
+        }
+        printf("\n");
     }
 
     // throw to gpu
@@ -20,6 +29,8 @@ void street::Load_map(char *infilename)
 
     cudaMalloc((void **)&Dscaled_map, MAP_SIZE * MAP_SIZE * sizeof(map));
     cudaMalloc((void **)&DOutputmap, MAP_SIZE * MAP_SIZE * sizeof(Outputmap));
+
+    printf("loaded input  map , inp size %d \n",inp_size);
 }
 
 void street::Output_map(char *outfilename)
@@ -30,7 +41,7 @@ void street::Output_map(char *outfilename)
     // if a phase is ended. output current map.
     FILE *outfile = fopen(outfilename, "ab");
 
-    fwrite(&Outputmap, sizeof(int), MAP_SIZE * MAP_SIZE, outfile);
+    fwrite(Outputmap, sizeof(int), MAP_SIZE * MAP_SIZE, outfile);
 
     fclose(outfile);
 

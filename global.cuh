@@ -7,41 +7,49 @@
 #include <cassert>
 #include <ctime>
 #include <cuda.h>
-#include <random>
+#include <curand.h>
+#include <curand_kernel.h>
 #include <cuda_runtime.h>
 #include <vector_types.h>
 #include <omp.h>
 
+#define BLOCKED -2
+#define EMPTY -1
 #define UP 0
 #define DOWN 1
 #define LEFT 2
 #define RIGHT 3
 #define MAP_SIZE 64 // 4n
 #define SCALE_SIZE 2
-#define PHASES 10
+#define PHASES 4
 #define C(i, j, k) (((j) * (k)) + (i))
 #define NUMOFPEOPLE 20
 
 class pos
 {
-    pos(int x, int y)
+public:
+    __device__ pos() { return; };
+    __device__ pos(int x, int y)
     {
-        x = x;
-        y = y;
-    }
+        this->x = x;
+        this->y = y;
+    };
     int x;
     int y;
 };
 
 class preference
 {
-    preference(int up, int down, int left, int right)
+public:
+    __device__ preference() { return; };
+    __device__ preference(int up, int down, int left, int right)
     {
-        up = up;
-        down = down;
-        left = left;
-        right = right;
-    }
+        this->up = up;
+        this->down =down ;
+        this->left =left;
+        this->right =right;
+    };
+
     int up;
     int down;
     int left;
@@ -54,7 +62,7 @@ class person;
 class map
 {
 public:
-    __device__ map::map()
+    __device__ map()
     {
         memset(buffer, 0, sizeof(buffer));
         vis = 0;

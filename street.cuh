@@ -9,15 +9,12 @@ class street
 public:
     street()
     {
-        width = height = MAP_SIZE / SCALE_SIZE;
-        printf("Street Initialized\n");
-
-        streetmap = new int[MAP_SIZE / SCALE_SIZE * MAP_SIZE / SCALE_SIZE]; // create a map
+        this->width = this->height = MAP_SIZE / SCALE_SIZE;
     }
     ~street()
     {
         cudaFree(Dstreetmap);
-        cudaFree(Dscaledmap);
+        cudaFree(Dscaled_map);
         cudaFree(DOutputmap);
         free(streetmap);
         free(Outputmap);
@@ -30,9 +27,8 @@ public:
 
     int *streetmap;
     int *Dstreetmap;
-    map *Dscaledmap;
-    int *Outputmap;
-    int *DOutputmap;
+    map *Dscaled_map;
+    int *Outputmap, *DOutputmap;
 
 private:
 };

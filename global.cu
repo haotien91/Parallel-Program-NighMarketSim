@@ -3,7 +3,7 @@
 __device__ int preference::choose()
 {
     // Define weighted probabilities for each direction
-    int weights[] = {up, down, left, right}; // Adjust these values for different weights
+    int weights[] = {this->up, this->down, this->left, this->right}; // Adjust these values for different weights
 
     // Calculate total weight
     int totalWeight = 0;
@@ -13,10 +13,10 @@ __device__ int preference::choose()
     }
 
     // Generate a random number between 1 and total weight
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(1, totalWeight);
-    int randomNum = dis(gen);
+  //  std::random_device rd;
+ //   std::mt19937 gen(rd());
+ //   std::uniform_int_distribution<> dis(1, totalWeight);
+    int randomNum = 0; //NEED TO CHANGE 
 
     // Choose a direction based on weighted probabilities
     if (randomNum <= weights[0])

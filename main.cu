@@ -17,32 +17,8 @@ int main(int argc, char **argv)
 
     set<<<grid, blk>>>(Playground->Dstreetmap, Playground->Dscaled_map);
 
-    // for (int i = 0; i < 64; i++)
-    // {
-    //     for (int j = 0; j < 64; j++)
-    //     {
-    //         printf("X");
-    //     }
-    //     printf("\n");
-    // }
-    // printf("\n");
-
     // test write in
-    test_write<<<grid, blk>>>(Playground->Dstreetmap, Playground->Dscaled_map, Playground->DOutputmap);
-
-    cudaError_t err = cudaGetLastError();
-    if (err != cudaSuccess)
-    {
-        printf("error test_write\n");
-    }
-
-    test_out<<<grid, blk>>>(Playground->DOutputmap);
-
-    err = cudaGetLastError();
-    if (err != cudaSuccess)
-    {
-        printf("error test_out\n");
-    }
+   //test_write<<<grid, blk>>>(Playground->Dstreetmap, Playground->Dscaled_map, Playground->DOutputmap);
 
         for (int i = 0; i < PHASES; i++)
     {

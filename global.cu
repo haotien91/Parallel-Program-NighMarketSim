@@ -3,7 +3,7 @@
 __device__ int preference::choose()
 {
     // Define weighted probabilities for each direction
-    int weights[] = {up, down, left, right}; // Adjust these values for different weights
+    int weights[] = {this->up, this->down, this->left, this->right}; // Adjust these values for different weights
 
     // Calculate total weight
     int totalWeight = 0;
@@ -35,20 +35,4 @@ __device__ int preference::choose()
     {
         return RIGHT; // Right
     }
-}
-
-
-__device__ preference::preference(int up,int down ,int left ,int right)
-{
-    up = up;
-    down =down ;
-    left =left;
-    right =right;
-}
-
-
-__device__ pos::pos(int x, int y)
-{
-        x = x;
-        y = y;
 }

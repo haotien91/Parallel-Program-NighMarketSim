@@ -12,7 +12,6 @@ public:
     int direction;
     pos position;
     int speed;
-    bool out_of_bound;
     preference p;
     pos next_position;
 

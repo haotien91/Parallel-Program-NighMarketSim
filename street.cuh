@@ -9,16 +9,15 @@ class street
 public:
     street()
     {
-        width = height = MAP_SIZE / SCALE_SIZE;
+        this->width = this->height = MAP_SIZE / SCALE_SIZE;
     }
     ~street()
     {
-       cudaFree(Dstreetmap);
-       cudaFree(Dscaled_map);
-       cudaFree(DOutputmap);
-       free(streetmap);
-       free(Outputmap);
-       
+        cudaFree(Dstreetmap);
+        cudaFree(Dscaled_map);
+        cudaFree(DOutputmap);
+        free(streetmap);
+        free(Outputmap);
     }
     void Load_map(char *infilename);
     void Output_map(char *outfilename);
@@ -28,7 +27,7 @@ public:
 
     int *streetmap;
     int *Dstreetmap;
-    map * Dscaled_map;
+    map *Dscaled_map;
     int *Outputmap, *DOutputmap;
 
 private:

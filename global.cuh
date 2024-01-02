@@ -13,21 +13,27 @@
 #include <vector_types.h>
 #include <omp.h>
 
+#define BLOCKED -2
+#define EMPTY -1
 #define UP 0
 #define DOWN 1
 #define LEFT 2
 #define RIGHT 3
 #define MAP_SIZE 64 // 4n
 #define SCALE_SIZE 2
-#define PHASES 1
+#define PHASES 4
 #define C(i, j, k) (((j) * (k)) + (i))
 #define NUMOFPEOPLE 20
 
 class pos
 {
 public:
-    __device__ pos(){return ;};
-    __device__ pos(int x, int y);
+    __device__ pos() { return; };
+    __device__ pos(int x, int y)
+    {
+        this->x = x;
+        this->y = y;
+    };
     int x;
     int y;
 };
@@ -35,9 +41,15 @@ public:
 class preference
 {
 public:
-    __device__ preference(){return ;};
-    __device__ preference(int up,int down,int left ,int right) ;
-   
+    __device__ preference() { return; };
+    __device__ preference(int up, int down, int left, int right)
+    {
+        this->up = up;
+        this->down =down ;
+        this->left =left;
+        this->right =right;
+    };
+
     int up;
     int down;
     int left;

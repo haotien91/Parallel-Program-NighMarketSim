@@ -37,12 +37,12 @@ __global__ void set(int * Dstreetmap,map * Dscaled_map)
    
     person * p ;
     // set people
-    if(position.x == 0 && position.y < NUMOFPEOPLE)
+    if(position.x == 1 && position.y < NUMOFPEOPLE)
     {
          // should set people 
 
         int direction = RIGHT;
-        preference prefer(4,4,2,90);
+        preference prefer(4,4,45,47);
        // prefer.set_preference(4,4,90,2);
 
         p = new person(direction,position,1,prefer);
@@ -63,7 +63,12 @@ __global__ void decide(map * Dscaled_map)
     {
             // have person 
             Dscaled_map[C(position.x,position.y,MAP_SIZE)].buffer[Dscaled_map[C(position.x,position.y,MAP_SIZE)].vis]->decide(Dscaled_map);
+
+            Dscaled_map[C(position.x,position.y,MAP_SIZE)].vis =  Dscaled_map[C(position.x,position.y,MAP_SIZE)].buffer[Dscaled_map[C(position.x,position.y,MAP_SIZE)].vis]->direction;
+
     }
+
+    
     return ;
 
 }

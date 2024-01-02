@@ -30,11 +30,16 @@ person::decide(map *Dscaled_map)
         break;
     }
 
-    if (!is_walkable(Dscaled_map, this->position))
-        this->next_position = this->position;
+    if (!is_walkable(Dscaled_map, this->next_position))
+    {
+        this->next_position.x = this->position.x;
+        this->next_position.y = this->position.y;
+    }
     else
+    {
+        if(choice == UP)printf("%d %d %d %d %d %d\n", this->next_position.x,this->position.x, this->next_position.y,this->position.y,C(this->next_position.x,this->next_position.y,MAP_SIZE),Dscaled_map[C(this->next_position.x,this->next_position.y,MAP_SIZE)].vis);
         this->direction = choice;
-
+    }
     return;
 }
 
@@ -55,9 +60,10 @@ person::walk_back(map *Dscaled_map)
 }
 
 __device__ bool
-person::is_walkable(map *Dstreetmap, pos position_check)
+person::is_walkable(map *Dscaled_map, pos position_check)
 {
-    if (Dstreetmap[C(position_check.x, position_check.y, MAP_SIZE)].vis == -1)
+    if(C(position_check.x, position_check.y, MAP_SIZE) < 0 || C(position_check.x, position_check.y, MAP_SIZE) >= MAP_SIZE * MAP_SIZE )return false;
+    if (Dscaled_map[C(position_check.x, position_check.y, MAP_SIZE)].vis == -1)
         return true;
     else
         return false;

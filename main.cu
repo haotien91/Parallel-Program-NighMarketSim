@@ -18,11 +18,14 @@ int main(int argc, char **argv)
     set<<<grid, blk>>>(Playground->Dstreetmap, Playground->Dscaled_map);
 
     // test write in
-   //test_write<<<grid, blk>>>(Playground->Dstreetmap, Playground->Dscaled_map, Playground->DOutputmap);
+   
 
         for (int i = 0; i < PHASES; i++)
     {
+        printf("In phase %d\n", i);
         decide<<<grid, blk>>>(Playground->Dscaled_map);
+
+        test_write<<<grid, blk>>>(Playground->Dstreetmap, Playground->Dscaled_map, Playground->DOutputmap);// print Dscalemap
 
         run<<<grid, blk>>>(Playground->Dscaled_map);
 
@@ -30,7 +33,7 @@ int main(int argc, char **argv)
 
         // For : when run finish a phase , trigger event
 
-        printf("In phase %d\n", i);
+        
         Playground->Output_map(output_filename);
         
     }

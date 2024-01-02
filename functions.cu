@@ -143,9 +143,9 @@ __global__ void test_write(int* Dstreetmap, map *Dscaled_map, int *DOutput_map)
     {
         printf("My blkIdx = (%d,%d), thrIdx=(%d,%d) with pos.x=%d (actual=%d), pos.y=%d (actual=%d)\n", blockIdx.x, blockIdx.y, threadIdx.x, threadIdx.y, position.x, blockIdx.x * blockDim.x + threadIdx.x, position.y, blockIdx.y * blockDim.y + threadIdx.y);
         printf("This is Dstreetmap\n");
-        for (int i = 0; i < 64; i++)
+        for (int i = 0; i < 32; i++)
         {
-            for (int j = 0; j < 64; j++)
+            for (int j = 0; j < 32; j++)
             {
                 printf("%d ", Dstreetmap[C(i, j, MAP_SIZE)]);
             }

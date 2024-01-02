@@ -17,21 +17,21 @@ person::decide(map *Dscaled_map)
     switch (choice)
     {
     case UP:
-        new_position.y = position.y - speed;
+        this->next_position.y = this->position.y - this->speed;
         break;
     case DOWN:
-        new_position.y = position.y + speed;
+        this->next_position.y = this->position.y + this->speed;
         break;
     case LEFT:
-        new_position.x = position.x - speed;
+        this->next_position.x = this->position.x - this->speed;
         break;
     case RIGHT:
-        new_position.x = position.x + speed;
+        this->next_position.x = this->position.x + this->speed;
         break;
     }
 
-    if (!is_walkable(Dscaled_map, position))
-        new_position = position;
+    if (!is_walkable(Dscaled_map, this->position))
+        this->next_position = this->position;
     else
         this->direction = choice;
 

@@ -4,6 +4,7 @@ __device__ person::person(int direction, pos position, int speed, preference p)
 {
     this->direction = direction;
     this->position = position;
+    this->next_position = position ; 
     this->speed = speed;
     this->p = p;
 
@@ -17,18 +18,23 @@ person::decide(map *Dscaled_map)
     switch (choice)
     {
     case UP:
+      //  this->next_position.x = this->position.x;
         this->next_position.y = this->position.y - this->speed;
         break;
     case DOWN:
+     //   this->next_position.x = this->position.x;
         this->next_position.y = this->position.y + this->speed;
         break;
     case LEFT:
         this->next_position.x = this->position.x - this->speed;
+   //     this->next_position.y = this->position.y;
         break;
     case RIGHT:
         this->next_position.x = this->position.x + this->speed;
+   //     this->next_position.y = this->position.y;
         break;
     }
+
 
     if (!is_walkable(Dscaled_map, this->next_position))
     {
@@ -37,7 +43,8 @@ person::decide(map *Dscaled_map)
     }
     else
     {
-        if(choice == UP)printf("%d %d %d %d %d %d\n", this->next_position.x,this->position.x, this->next_position.y,this->position.y,C(this->next_position.x,this->next_position.y,MAP_SIZE),Dscaled_map[C(this->next_position.x,this->next_position.y,MAP_SIZE)].vis);
+        // below line should not happen : 
+        //if(choice == UP)printf("%d %d %d %d %d %d\n", this->next_position.x,this->position.x, this->next_position.y,this->position.y,C(this->next_position.x,this->next_position.y,MAP_SIZE),Dscaled_map[C(this->next_position.x,this->next_position.y,MAP_SIZE)].vis);
         this->direction = choice;
     }
     return;

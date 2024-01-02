@@ -64,7 +64,7 @@ __global__ void decide(map * Dscaled_map)
             // have person 
             Dscaled_map[C(position.x,position.y,MAP_SIZE)].buffer[Dscaled_map[C(position.x,position.y,MAP_SIZE)].vis]->decide(Dscaled_map);
 
-            Dscaled_map[C(position.x,position.y,MAP_SIZE)].vis =  Dscaled_map[C(position.x,position.y,MAP_SIZE)].buffer[Dscaled_map[C(position.x,position.y,MAP_SIZE)].vis]->direction;
+          //  Dscaled_map[C(position.x,position.y,MAP_SIZE)].vis =  Dscaled_map[C(position.x,position.y,MAP_SIZE)].buffer[Dscaled_map[C(position.x,position.y,MAP_SIZE)].vis]->direction;
 
     }
 
@@ -104,38 +104,52 @@ __global__ void check(map * Dscaled_map,int * DOutput_map)
         {
             if(location.buffer[i] != NULL)
             {
-                tmp[counter++] = i ;
+                // is a moved person
+                if(location.buffer[i]->next_position.x == position.x && location.buffer[i]->next_position.y == position.y)tmp[counter++] = i ;
+
+                // person original place is gone
+                else 
+                {
+                    location.buffer[i] = NULL;
+                    location.vis = -1 ; 
+                }
             }
         }
-
-        curandState state;
-        curand_init(clock64(), counter, 0, &state);
-
-        int random_pos = curand(&state) % counter ; 
-        int random_val = tmp[random_pos];
-
-        for(int i = 0 ; i < 4 ; i++)
+        if(counter > 0)
         {
-            if(location.buffer[i] != NULL)
+            curandState state;
+            curand_init(clock64(), 0, 0, &state);
+            float myrandf = curand_uniform(&state);
+            myrandf *= (counter);
+            myrandf += UP;
+            int random_pos = (int)truncf(myrandf);; //NEED TO CHANGE 
+            int random_val = tmp[random_pos];
+
+            //synchronize next position and position
+            for(int i = 0 ; i < 4 ; i++)
             {
-                if(i  != random_val)
+                if(location.buffer[i] != NULL)
                 {
-                    // go back to previous_position
-                location.buffer[i]->walk_back(Dscaled_map);
-                location.buffer[i]->next_position = location.buffer[i]->position;
+                    if(i  != random_val)
+                    {
+                        // go back to previous_position
+                    location.buffer[i]->walk_back(Dscaled_map);
+                    location.buffer[i]->next_position = location.buffer[i]->position;
 
-                //set to null 
-                location.buffer[i] = NULL;
+                    //set to null 
+                    location.buffer[i] = NULL;
 
-                }
-                else
-                {
-                    location.buffer[i]->position = location.buffer[i]->next_position;
+                    }
+                    else
+                    {
+                        location.buffer[i]->position = location.buffer[i]->next_position;
+                        location.vis = i;
+                    }
                 }
             }
         }
-        location.vis = random_val;
         Dscaled_map[C(position.x,position.y,MAP_SIZE)] = location;
+        
     }
 
     //Delete people if people is out

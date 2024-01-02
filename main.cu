@@ -24,21 +24,31 @@ int main(int argc, char **argv)
     {
         printf("In phase %d\n", i);
         decide<<<grid, blk>>>(Playground->Dscaled_map);
-
         test_write<<<grid, blk>>>(Playground->Dstreetmap, Playground->Dscaled_map, Playground->DOutputmap);// print Dscalemap
 
         run<<<grid, blk>>>(Playground->Dscaled_map);
+        test_write<<<grid, blk>>>(Playground->Dstreetmap, Playground->Dscaled_map, Playground->DOutputmap);// print Dscalemap
 
         check<<<grid, blk>>>(Playground->Dscaled_map, Playground->DOutputmap);
+        test_write<<<grid, blk>>>(Playground->Dstreetmap, Playground->Dscaled_map, Playground->DOutputmap);// print Dscalemap
 
         // For : when run finish a phase , trigger event
 
         
         Playground->Output_map(output_filename);
-        
+/*
+        for(int i = 0 ; i < MAP_SIZE ; i++)
+        {
+            for(int j = 0 ; j < MAP_SIZE ; j++)
+            {
+                printf("%d ", (Playground->Outputmap)[C(j,i,MAP_SIZE)]);
+            }
+            printf("\n");
+        }
+*/
     }
-    
-   
+  //  free(Playground->Outputmap);
+ 
 
     // free memory
     printf("finished start deleting object \n");
@@ -53,7 +63,7 @@ int main(int argc, char **argv)
     // free(Playground->Outputmap);
     // printf("Output\n");
 
-    // delete Playground;
+    delete Playground;
     printf("delete success\n");
 
     return;

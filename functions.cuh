@@ -11,7 +11,7 @@ __global__ void decide(map *Dscaled_map);
 __global__ void set(int *Dstreetmap, map *Dscaled_map);
 __global__ void run(map *Dscaled_map);
 
-__global__ void test_write(int* Dstreetmap, map *Dscaled_map, int *DOutput_map);
+__global__ void test_write(int *Dstreetmap, map *Dscaled_map, int *DOutput_map);
 __global__ void test_out(int *DOutput_map);
 
 #endif

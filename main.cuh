@@ -6,6 +6,4 @@
 #include "person.cuh"
 #include "street.cuh"
 
-
-
-#endif 
+#endif

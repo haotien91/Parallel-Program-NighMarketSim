@@ -4,6 +4,9 @@
 #include "global.cuh"
 #include "street.cuh"
 
+#define REMOVE 0
+#define ON_BOARD 1
+
 class person
 {
 public:
@@ -15,7 +18,7 @@ public:
     preference p;
     pos next_position;
 
-    __device__ void decide(map *Dscaled_map);
+    __device__ int decide(map *Dscaled_map);
     __device__ void walk(map *Dscaled_map);
     __device__ void walk_back(map *Dscaled_map);
 

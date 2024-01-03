@@ -35,12 +35,28 @@ void street::Output_map(char *outfilename)
 
     cudaMemcpy(this->Outputmap, this->DOutputmap, MAP_SIZE * MAP_SIZE * sizeof(int), cudaMemcpyDeviceToHost);
 
+    // char newline = '\n';
+
     // if a phase is ended. output current map.
     FILE *outfile = fopen(outfilename, "ab");
 
     fwrite(this->Outputmap, sizeof(int), MAP_SIZE * MAP_SIZE, outfile);
+    // fwrite(&newline, sizeof(char), 1, outfile);
 
     fclose(outfile);
 
     return;
+}
+
+void street::Output_size(char *outfilename)
+{
+    FILE *outfile = fopen(outfilename, "w");
+
+    // char blank = ' ';
+    // char newline = '\n';
+
+    fwrite(&this->size, sizeof(int), 1, outfile);
+    // fwrite(&blank, sizeof(char), 1, outfile);
+    // fwrite(&this->height, sizeof(int), 1, outfile);
+    // fwrite(&newline, sizeof(char), 1, outfile);
 }

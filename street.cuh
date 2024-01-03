@@ -9,21 +9,23 @@ class street
 public:
     street()
     {
-        this->width = this->height = MAP_SIZE / SCALE_SIZE;
+        // this->width = this->height = MAP_SIZE / SCALE_SIZE;
     }
     ~street()
     {
-        cudaFree(Dstreetmap);
-        cudaFree(Dscaled_map);
-        cudaFree(DOutputmap);
-        free(streetmap);
-        free(Outputmap);
+        cudaFree(this->Dstreetmap);
+        cudaFree(this->Dscaled_map);
+        cudaFree(this->DOutputmap);
+        free(this->streetmap);
+        free(this->Outputmap);
     }
     void Load_map(char *infilename);
     void Output_map(char *outfilename);
+    void Output_size(char *outfilename);
 
-    int width;
-    int height;
+    // int width;
+    // int height;
+    int size = MAP_SIZE;
 
     int *streetmap;
     int *Dstreetmap;

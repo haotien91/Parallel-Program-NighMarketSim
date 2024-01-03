@@ -13,10 +13,20 @@ __device__ int preference::choose()
     }
 
     // Generate a random number between 1 and total weight
-  //  std::random_device rd;
- //   std::mt19937 gen(rd());
- //   std::uniform_int_distribution<> dis(1, totalWeight);
-    int randomNum = 0; //NEED TO CHANGE 
+    //  std::random_device rd;
+    //   std::mt19937 gen(rd());
+    //   std::uniform_int_distribution<> dis(1, totalWeight);
+
+    // assume have already set up curand and generated state for each thread...
+    // assume ranges vary by thread index
+    curandState state;
+    curand_init(clock64(), 0, 0, &state);
+    float myrandf = curand_uniform(&state);
+    myrandf *= (100);
+    myrandf += UP;
+
+    int randomNum = (int)truncf(myrandf);
+    ; // NEED TO CHANGE
 
     // Choose a direction based on weighted probabilities
     if (randomNum <= weights[0])

@@ -7,6 +7,7 @@ __device__ person::person(int direction, pos position, int speed, preference p)
     this->next_position = position;
     this->speed = speed;
     this->p = p;
+    this->oob = false;
 
     return;
 }
@@ -35,22 +36,22 @@ person::decide(map *Dscaled_map)
         break;
     }
 
-    if (!is_walkable(Dscaled_map, this->next_position))
+    // whether person is out of bound?
+    int walkable = is_walkable(Dscaled_map, this->next_position);
+    if(walkable == REMOVE)
+    {
+        return REMOVE;
+    }
+    if (walkable == UNWALKABLE)
     {
         this->next_position.x = this->position.x;
         this->next_position.y = this->position.y;
     }
-    else
+    if(walkable == WALKABLE)
     {
         // below line should not happen :
         // if(choice == UP)printf("%d %d %d %d %d %d\n", this->next_position.x,this->position.x, this->next_position.y,this->position.y,C(this->next_position.x,this->next_position.y,MAP_SIZE),Dscaled_map[C(this->next_position.x,this->next_position.y,MAP_SIZE)].vis);
         this->direction = choice;
-
-        // whether person is out of bound?
-        if (this->next_position.x < 0 || this->next_position.x >= MAP_SIZE || this->next_position.y < 0 || this->next_position.y >= MAP_SIZE)
-        {
-            return REMOVE;
-        }
     }
     return ON_BOARD;
 }
@@ -71,13 +72,15 @@ person::walk_back(map *Dscaled_map)
     Dscaled_map[C(this->position.x, this->position.y, MAP_SIZE)].buffer[this->direction] = this;
 }
 
-__device__ bool
+__device__ int
 person::is_walkable(map *Dscaled_map, pos position_check)
 {
-    if (C(position_check.x, position_check.y, MAP_SIZE) < 0 || C(position_check.x, position_check.y, MAP_SIZE) >= MAP_SIZE * MAP_SIZE)
-        return false;
+    if (this->next_position.x < 0 || this->next_position.x >= MAP_SIZE || this->next_position.y < 0 || this->next_position.y >= MAP_SIZE)
+    {
+        return REMOVE;
+    }
     if (Dscaled_map[C(position_check.x, position_check.y, MAP_SIZE)].vis == -1)
-        return true;
+        return WALKABLE;
     else
-        return false;
+        return UNWALKABLE;
 }

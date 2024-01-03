@@ -2,6 +2,7 @@
 
 __device__ int preference::choose()
 {
+    pos position((blockIdx.x * blockDim.x + threadIdx.x) , (blockIdx.y * blockDim.y + threadIdx.y) );
     // Define weighted probabilities for each direction
     int weights[] = {this->up, this->down, this->left, this->right}; // Adjust these values for different weights
 
@@ -20,7 +21,7 @@ __device__ int preference::choose()
     // assume have already set up curand and generated state for each thread...
     // assume ranges vary by thread index
     curandState state;
-    curand_init(clock64(), 0, 0, &state);
+    curand_init(clock64(), C(position.x,position.y,MAP_SIZE) , 0, &state);
     float myrandf = curand_uniform(&state);
     myrandf *= (100);
     myrandf += UP;

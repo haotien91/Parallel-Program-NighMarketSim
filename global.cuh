@@ -21,7 +21,7 @@
 #define RIGHT 3
 #define MAP_SIZE 64 // 4n
 #define SCALE_SIZE 2
-#define PHASES 64
+#define PHASES 100
 #define C(i, j, k) (((j) * (k)) + (i))
 #define NUMOFPEOPLE 50
 

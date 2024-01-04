@@ -2,6 +2,7 @@
 
 __device__ person::person(int direction, pos position, int speed, preference p)
 {
+  
     this->direction = direction;
     this->position = position;
     this->next_position = position;
@@ -13,9 +14,9 @@ __device__ person::person(int direction, pos position, int speed, preference p)
 }
 
 __device__ int
-person::decide(map *Dscaled_map)
+person::decide(map *Dscaled_map,int * Dx_bounds,int * Dy_bounds);
 {
-    int choice = this->p.choose();
+    int choice = this->p.choose(Dx_bounds,Dy_bounds);
     switch (choice)
     {
     case UP:

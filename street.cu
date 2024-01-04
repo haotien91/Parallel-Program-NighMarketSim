@@ -30,6 +30,76 @@ void street::Load_map(char *infilename)
     printf("loaded input  map , inp size %d \n", inp_size);
 }
 
+void street::Set_bounds()
+{
+    int x_count = 0 ,y_count = 0,state  ;
+    int inp_size = MAP_SIZE / SCALE_SIZE;
+
+    this->x_bounds = malloc(inp_size * inp_size * sizeof(int));
+    this->y_bounds = malloc(inp_size * inp_size * sizeof(int));
+    memset(this->x_bounds,-1, sizeof(this->x_bounds));
+    memset(this->y_bounds,-1, sizeof(this->x_bounds));
+    
+    for(int i = 0 ; i < inp_size ; i++ )
+    {
+        state = this->streetmap[C(0,i,inp_size)];
+        x_count = 0;
+        for(int j = 0 ; j < inp_size ;j++)
+        {
+            if(this->streetmap[C(j,i,inp_size)] != state)
+            {
+                if(state == 0)
+                {
+                   if(this->x_bounds[C(x_count,i,inp_size)] != j-1)this->x_bounds[C(x_count++,i,inp_size)]  = j-1;
+                   state  = 1;
+                }
+                else
+                {
+                    this->x_bounds[C(x_count++,i,inp_size)] = j;
+                    state  = 0;
+                }
+            }
+        }
+        std::sort(this->x_bounds,this->x_bounds,this->x_bounds+x_count);
+    }
+
+    for(int i = 0 ; i < inp_size ; i++ )
+    {
+        state = this->streetmap[C(i,0,inp_size)];
+        y_count = 0;
+        for(int j = 0 ; j < inp_size ;j++)
+        {
+            if(this->streetmap[C(i,j,inp_size)] != state)
+            {
+                if(state == 0)
+                {
+                   if(this->y_bounds[C(y_count,i,inp_size)] != j-1)this->y_bounds[C(y_count++,i,inp_size)] = j-1;
+                   state  = 1;
+                }
+                else
+                {
+                    this->y_bounds[C(y_count++,i,inp_size)] = j;
+                    state  = 0;
+                }
+            }
+        }
+        std::sort(this->y_bounds,this->y_bounds,this->y_bounds+y_count);
+    }
+
+    //SCALING 
+    for(int i = 0 ; i < inp_size * inp_size ; i++ )
+    {
+        this -> x_bounds[i] = this -> x_bounds[i] * SCALE_SIZE + (SCALE_SIZE-1);
+        this -> y_bounds[i] = this -> y_bounds[i] * SCALE_SIZE + (SCALE_SIZE-1);
+    }
+    
+    cudaMalloc((void **)&this->Dx_bounds, inp_size * inp_size * sizeof(int));
+    cudaMemcpy(this->Dx_bounds, this->x_bounds, inp_size * inp_size * sizeof(int), cudaMemcpyHostToDevice);
+    cudaMalloc((void **)&this->Dy_bounds, inp_size * inp_size * sizeof(int));
+    cudaMemcpy(this->Dy_bounds, this->y_bounds, inp_size * inp_size * sizeof(int), cudaMemcpyHostToDevice);
+
+
+}
 void street::Output_map(char *outfilename)
 {
 

@@ -45,7 +45,7 @@ __global__ void set(int * Dstreetmap,map * Dscaled_map)
          // should set people 
 
         int direction = LEFT;
-        preference prefer(4, 4, 90, 2);
+        preference prefer(direction);
         // prefer.set_preference(4,4,90,2);
 
         p = new person(direction,position,1,prefer);
@@ -56,14 +56,14 @@ __global__ void set(int * Dstreetmap,map * Dscaled_map)
     return;
 }
 
-__global__ void decide(map *Dscaled_map)
+__global__ void decide(map *Dscaled_map,int * Dx_bounds, int * Dy_bounds)
 {
     pos position((blockIdx.x * blockDim.x + threadIdx.x), (blockIdx.y * blockDim.y + threadIdx.y));
 
     if(Dscaled_map[C(position.x,position.y,MAP_SIZE)].vis > -1)
     {
         // have person
-        int status = Dscaled_map[C(position.x, position.y, MAP_SIZE)].buffer[Dscaled_map[C(position.x, position.y, MAP_SIZE)].vis]->decide(Dscaled_map);
+        int status = Dscaled_map[C(position.x, position.y, MAP_SIZE)].buffer[Dscaled_map[C(position.x, position.y, MAP_SIZE)].vis]->decide(Dscaled_map,Dx_bounds,Dy_bounds);
 
         if (status == REMOVE)
         {

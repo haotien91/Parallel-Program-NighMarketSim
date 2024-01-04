@@ -24,6 +24,7 @@
 #define PHASES 100
 #define C(i, j, k) (((j) * (k)) + (i))
 #define NUMOFPEOPLE 50
+#define BACK 3
 
 class pos
 {
@@ -42,19 +43,29 @@ class preference
 {
 public:
     __device__ preference() { return; };
-    __device__ preference(int up, int down, int left, int right)
+    __device__ preference(int heading)
     {
-        this->up = up;
-        this->down = down;
-        this->left = left;
-        this->right = right;
+        this->heading = heading;
+        up = heading_weights[heading][0];
+        down =  heading_weights[heading][1];
+        left  =  heading_weights[heading][2];
+        right  =  heading_weights[heading][3];
     };
 
     int up;
     int down;
     int left;
     int right;
-    __device__ int choose();
+    int heading;
+    int heading_weights[4][4]= 
+    {
+        {90,2,4,4},
+        {2,90,4,4},
+        {4,4,90,2},
+        {4,4,2,90}
+    };
+    __device__ void set_weights(int * Dx_bounds, int * Dy_bounds,pos position);
+    __device__ int choose(int * Dx_bounds, int * Dy_bounds);
 };
 
 class person;

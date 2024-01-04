@@ -1,5 +1,9 @@
 #include "street.cuh"
 
+int cmpfunc (const void * a, const void * b) {
+   return ( *(int*)a - *(int*)b );
+}
+
 void street::Load_map(char *infilename)
 {
     FILE *file = fopen(infilename, "rb");
@@ -35,10 +39,10 @@ void street::Set_bounds()
     int x_count = 0 ,y_count = 0,state  ;
     int inp_size = MAP_SIZE / SCALE_SIZE;
 
-    this->x_bounds = malloc(inp_size * inp_size * sizeof(int));
-    this->y_bounds = malloc(inp_size * inp_size * sizeof(int));
-    memset(this->x_bounds,-1, sizeof(this->x_bounds));
-    memset(this->y_bounds,-1, sizeof(this->x_bounds));
+    this->x_bounds = (int*)malloc(inp_size * inp_size * sizeof(int));
+    this->y_bounds = (int*)malloc(inp_size * inp_size * sizeof(int));
+    memset(this->x_bounds,-1, inp_size * inp_size * sizeof(int));
+    memset(this->y_bounds,-1, inp_size * inp_size * sizeof(int));
     
     for(int i = 0 ; i < inp_size ; i++ )
     {
@@ -60,7 +64,7 @@ void street::Set_bounds()
                 }
             }
         }
-        std::sort(this->x_bounds,this->x_bounds,this->x_bounds+x_count);
+        qsort(this->x_bounds,x_count,sizeof(int),cmpfunc);
     }
 
     for(int i = 0 ; i < inp_size ; i++ )
@@ -83,7 +87,27 @@ void street::Set_bounds()
                 }
             }
         }
-        std::sort(this->y_bounds,this->y_bounds,this->y_bounds+y_count);
+        qsort(this->y_bounds,y_count,sizeof(int),cmpfunc);
+    }
+
+    printf("y_bounds:\n");
+    for(int i= 0 ; i< inp_size ;i++)
+    {
+        for(int j =0 ; j< inp_size ;j++)
+        {
+            printf("%d ", this->y_bounds[C(j,i,inp_size)]);
+        }
+        printf("\n");
+    }
+
+    printf("x_bounds:\n"); 
+    for(int i= 0 ; i< inp_size ;i++)
+    {
+        for(int j =0 ; j< inp_size ;j++)
+        {
+            printf("%d ", this->x_bounds[C(j,i,inp_size)]);
+        }
+        printf("\n");
     }
 
     //SCALING 
@@ -97,6 +121,8 @@ void street::Set_bounds()
     cudaMemcpy(this->Dx_bounds, this->x_bounds, inp_size * inp_size * sizeof(int), cudaMemcpyHostToDevice);
     cudaMalloc((void **)&this->Dy_bounds, inp_size * inp_size * sizeof(int));
     cudaMemcpy(this->Dy_bounds, this->y_bounds, inp_size * inp_size * sizeof(int), cudaMemcpyHostToDevice);
+
+    
 
 
 }

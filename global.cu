@@ -1,54 +1,60 @@
 #include "global.cuh"
 
-__device__ void preference::set_weights(int * Dx_bounds, int * Dy_bounds,pos position)
+__device__ int preference::set_weights(int * Dx_bounds, int * Dy_bounds,pos position)
 {
     // // find left, right bound 
+    int inp_size = MAP_SIZE/SCALE_SIZE;
     int left,right,up,down;
-    for(int i = 0 ; i < MAP_SIZE/SCALE_SIZE ; i++)
+    int scale_y = position.y / SCALE_SIZE;
+    for(int i = 0 ; i < inp_size ; i++)
     {
-        if (position.x <= Dx_bounds[position.y][i] && Dx_bounds[position.y][i] != -1)
+        
+        if (position.x <= Dx_bounds[C(i,scale_y,inp_size)] && Dx_bounds[C(i,scale_y,inp_size)] != -1)
         {
-            right = Dx_bounds[position.y][i];
-            if(i ==0)left = -100000000;
-            else left = Dx_bounds[position.y][i-1];
+            right = Dx_bounds[C(i,scale_y,inp_size)];
+            if(i ==0 )left = -100000000;
+            else left = Dx_bounds[C(i-1,scale_y,inp_size)];
 
 
             break;
         }
-        if(Dx_bounds[position.y][i] == -1 )
+        if(Dx_bounds[C(i,scale_y,inp_size)]  == -1 )
         {
             right = 100000000;
             if(i ==0)left = -100000000;
-            else left = Dx_bounds[position.y][i-1];
+            else left = Dx_bounds[C(i-1,scale_y,inp_size)];
             //set to map bound
             break;
         }
     }
     
 
-    // // find left, right bound 
-    for(int i = 0 ; i < MAP_SIZE/SCALE_SIZE ; i++)
+    int scale_x = position.x /  SCALE_SIZE;
+    for(int i = 0 ; i < inp_size ; i++)
     {
-        if (position.y <= Dy_bounds[position.x][i] && Dx_bounds[position.x][i] != -1)
+        if (position.y <= Dy_bounds[C(i,scale_x,inp_size)] && Dy_bounds[C(i,scale_x,inp_size)] != -1)
         {
-            down = Dx_bounds[position.x][i];
+            down = Dy_bounds[C(i,scale_x,inp_size)];
             if(i ==0)up = -100000000;
-            else up = Dx_bounds[position.y][i-1];
+            else up = Dy_bounds[C(i-1,scale_x,inp_size)];
 
             break;
         }
-        if(Dy_bounds[position.x][i] == -1 )
+        if(Dy_bounds[C(i,scale_x,inp_size)] == -1 )
         {
             down = 100000000;
             if(i ==0)up = -100000000;
-            else up = Dx_bounds[position.y][i-1];
+            else up = Dy_bounds[C(i-1,scale_x,inp_size)];
             //set to map bound
             break;
         }
     }
-    int vecs = {position.y - up,down - position.y,position.x - left,right - position.x};
-   
+
+    int vecs[] = {position.y - up,down - position.y,position.x - left,right - position.x};
+    int opp[] = {DOWN,UP,RIGHT,LEFT};
     vecs[BACK] = 0 ;
+    vecs[opp[heading]]= 0;
+    
 
     // get max vecs 
     int  max_val = 0 ,max_ind;
@@ -56,7 +62,7 @@ __device__ void preference::set_weights(int * Dx_bounds, int * Dy_bounds,pos pos
     {
         if(max_val <= vecs[i])
         {
-            max_val =vecs[i];
+            max_val = vecs[i];
             max_ind = i;
         }
     }
@@ -65,15 +71,17 @@ __device__ void preference::set_weights(int * Dx_bounds, int * Dy_bounds,pos pos
     // if diff , get turn prob 
     if(max_ind != this->heading)
     {
-
-        turn_prob = 10 + ( 10 > float(vecs[heading]) ? (10 - float(vecs[heading])) : 0  );
+     //   printf("%d %d %d %d\n",position.x, position.y ,vecs[max_ind],vecs[heading]);
+     //   turn_prob = ( 10 + ( 10 > vecs[heading]) ? (10 - vecs[heading])*10 : 0  );
+      turn_prob = ( 25 + ( MAP_SIZE/3 > vecs[heading]) ? (MAP_SIZE/3 - vecs[heading])*10 : 0  );
     }
     curandState state;
     curand_init(clock64(), C(position.x,position.y,MAP_SIZE) , 0, &state);
     float myrandf = curand_uniform(&state);
 
     myrandf *= (100);
-    if(my_randf < turn_prob)
+ //   printf("%d %d %d %d %d %d\n",position.x , position.y , up , down ,left, right);
+    if(myrandf < turn_prob)
     {
         //turn 
         return max_ind;
@@ -86,10 +94,8 @@ __device__ int preference::choose(int * Dx_bounds, int * Dy_bounds)
     // Define weighted probabilities for each direction
 
     int new_heading = set_weights(Dx_bounds,Dy_bounds,position);
-
-    
-    
-    weights = this->heading_weights[new_heading];
+    this->heading = new_heading;
+    int *  weights = this->heading_weights[new_heading];
 
     
 

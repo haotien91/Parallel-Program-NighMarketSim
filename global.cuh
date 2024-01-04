@@ -12,6 +12,7 @@
 #include <cuda_runtime.h>
 #include <vector_types.h>
 #include <omp.h>
+#include <algorithm>
 
 #define OBSTACLES -2
 #define EMPTY -1
@@ -46,10 +47,7 @@ public:
     __device__ preference(int heading)
     {
         this->heading = heading;
-        up = heading_weights[heading][0];
-        down =  heading_weights[heading][1];
-        left  =  heading_weights[heading][2];
-        right  =  heading_weights[heading][3];
+        
     };
 
     int up;
@@ -57,6 +55,7 @@ public:
     int left;
     int right;
     int heading;
+   
     int heading_weights[4][4]= 
     {
         {90,2,4,4},
@@ -64,7 +63,7 @@ public:
         {4,4,90,2},
         {4,4,2,90}
     };
-    __device__ void set_weights(int * Dx_bounds, int * Dy_bounds,pos position);
+    __device__ int set_weights(int * Dx_bounds, int * Dy_bounds,pos position);
     __device__ int choose(int * Dx_bounds, int * Dy_bounds);
 };
 

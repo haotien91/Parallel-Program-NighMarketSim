@@ -73,7 +73,7 @@ __device__ int preference::set_weights(int * Dx_bounds, int * Dy_bounds,pos posi
     {
      //   printf("%d %d %d %d\n",position.x, position.y ,vecs[max_ind],vecs[heading]);
      //   turn_prob = ( 10 + ( 10 > vecs[heading]) ? (10 - vecs[heading])*10 : 0  );
-      turn_prob = ( 25 + ( MAP_SIZE/3 > vecs[heading]) ? (MAP_SIZE/3 - vecs[heading])*10 : 0  );
+      turn_prob = ( 15 + ( MAP_SIZE/2 > vecs[heading]) ? (MAP_SIZE/2- vecs[heading])*10 : 0  );
     }
     curandState state;
     curand_init(clock64(), C(position.x,position.y,MAP_SIZE) , 0, &state);

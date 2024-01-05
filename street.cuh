@@ -9,6 +9,7 @@ class street
 public:
     street()
     {
+        // this->width = this->height = MAP_SIZE / SCALE_SIZE;
     }
     ~street()
     {
@@ -19,7 +20,6 @@ public:
         free(this->Outputmap);
     }
     void Load_map(char *infilename);
-    void Set_bounds();
     void Output_map(char *outfilename);
     void Output_size(char *outfilename);
 
@@ -30,8 +30,6 @@ public:
     int *streetmap;
     int *Dstreetmap;
     map *Dscaled_map;
-    int *Dx_bounds, *Dy_bounds;
-    int *x_bounds , * y_bounds;
     int *Outputmap, *DOutputmap;
 
 private:

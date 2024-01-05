@@ -8,13 +8,13 @@ __device__ void scale_map(int * Dstreetmap,map * Dscaled_map,pos position)
     int inp_x = scale_x/SCALE_SIZE;
     int inp_y = scale_y/SCALE_SIZE;
 
-    if (Dstreetmap[C(inp_x, inp_y, MAP_SIZE / SCALE_SIZE)] == 1) // person
+    if (Dstreetmap[C(inp_x, inp_y, MAP_SIZE / SCALE_SIZE)] == 0) // obstacles
     {
-        Dscaled_map[C(scale_x,scale_y,MAP_SIZE)].vis = -1;
+        Dscaled_map[C(scale_x,scale_y,MAP_SIZE)].vis = OBSTACLES;
     }
     else
     {
-        Dscaled_map[C(scale_x, scale_y, MAP_SIZE)].vis = OBSTACLES;
+        Dscaled_map[C(scale_x, scale_y, MAP_SIZE)].vis = Dstreetmap[C(inp_x, inp_y, MAP_SIZE / SCALE_SIZE)];    // put in grad
     }
 
     return;
@@ -22,10 +22,10 @@ __device__ void scale_map(int * Dstreetmap,map * Dscaled_map,pos position)
 
 __device__ void output_map(map * Dscaled_map,int* DOutput_map,pos position)
 {
-    if (Dscaled_map[C(position.x, position.y, MAP_SIZE)].vis >= UP) // people
-        DOutput_map[C(position.x, position.y, MAP_SIZE)] = 1;
-    else if (Dscaled_map[C(position.x, position.y, MAP_SIZE)].vis == EMPTY) // empty
+    if (Dscaled_map[C(position.x, position.y, MAP_SIZE)].vis >= UP_GRAD) // empty
         DOutput_map[C(position.x, position.y, MAP_SIZE)] = 0;
+    else if (Dscaled_map[C(position.x, position.y, MAP_SIZE)].vis >= UP) // people
+        DOutput_map[C(position.x, position.y, MAP_SIZE)] = 1;
     else if (Dscaled_map[C(position.x, position.y, MAP_SIZE)].vis == OBSTACLES) // obstacle
         DOutput_map[C(position.x, position.y, MAP_SIZE)] = 2;
 
@@ -39,8 +39,9 @@ __global__ void set(int * Dstreetmap,map * Dscaled_map)
     scale_map(Dstreetmap, Dscaled_map, position);
 
     person *p;
+
     // set people
-    if (position.x >= MAP_SIZE - 6 && position.y < NUMOFPEOPLE && Dscaled_map[C(position.x, position.y, MAP_SIZE)].vis == -1)
+    if (position.x >= LINEOFPEOPLE  && position.y < NUMOFPEOPLE && Dscaled_map[C(position.x, position.y, MAP_SIZE)].vis != OBSTACLES)
     {
          // should set people 
 
@@ -60,7 +61,7 @@ __global__ void decide(map *Dscaled_map)
 {
     pos position((blockIdx.x * blockDim.x + threadIdx.x), (blockIdx.y * blockDim.y + threadIdx.y));
 
-    if(Dscaled_map[C(position.x,position.y,MAP_SIZE)].vis > -1)
+    if(Dscaled_map[C(position.x,position.y,MAP_SIZE)].vis > -1 && Dscaled_map[C(position.x,position.y,MAP_SIZE)].vis < UP_GRAD)
     {
         // have person
         int status = Dscaled_map[C(position.x, position.y, MAP_SIZE)].buffer[Dscaled_map[C(position.x, position.y, MAP_SIZE)].vis]->decide(Dscaled_map);

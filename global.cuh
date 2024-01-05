@@ -19,11 +19,18 @@
 #define DOWN 1
 #define LEFT 2
 #define RIGHT 3
+
+#define UP_GRAD 4
+#define DOWN_GRAD 5
+#define LEFT_GRAD 6
+#define RIGHT_GRAD 7
+
 #define MAP_SIZE 64 // 4n
 #define SCALE_SIZE 2
 #define PHASES 100
 #define C(i, j, k) (((j) * (k)) + (i))
 #define NUMOFPEOPLE 50
+#define LINEOFPEOPLE MAP_SIZE - 6
 
 class pos
 {

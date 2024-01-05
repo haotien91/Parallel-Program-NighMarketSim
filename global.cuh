@@ -12,7 +12,6 @@
 #include <cuda_runtime.h>
 #include <vector_types.h>
 #include <omp.h>
-#include <algorithm>
 
 #define OBSTACLES -2
 #define EMPTY -1
@@ -22,10 +21,9 @@
 #define RIGHT 3
 #define MAP_SIZE 64 // 4n
 #define SCALE_SIZE 2
-#define PHASES 1000
+#define PHASES 100
 #define C(i, j, k) (((j) * (k)) + (i))
 #define NUMOFPEOPLE 50
-#define BACK 3
 
 class pos
 {
@@ -44,27 +42,19 @@ class preference
 {
 public:
     __device__ preference() { return; };
-    __device__ preference(int heading)
+    __device__ preference(int up, int down, int left, int right)
     {
-        this->heading = heading;
-        
+        this->up = up;
+        this->down = down;
+        this->left = left;
+        this->right = right;
     };
 
     int up;
     int down;
     int left;
     int right;
-    int heading;
-   
-    int heading_weights[4][4]= 
-    {
-        {90,2,4,4},
-        {2,90,4,4},
-        {4,4,90,2},
-        {4,4,2,90}
-    };
-    __device__ int set_weights(int * Dx_bounds, int * Dy_bounds,pos position);
-    __device__ int choose(int * Dx_bounds, int * Dy_bounds);
+    __device__ int choose();
 };
 
 class person;

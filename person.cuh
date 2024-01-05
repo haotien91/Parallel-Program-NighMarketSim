@@ -13,7 +13,7 @@ class person
 {
 public:
     __device__ person(int direction, pos position, int speed, preference p);
-    
+
     int direction;
     pos position;
     int speed;
@@ -21,7 +21,7 @@ public:
     pos next_position;
     bool oob; 
 
-    __device__ int decide(map *Dscaled_map,int * Dx_bounds,int * Dy_bounds);
+    __device__ int decide(map *Dscaled_map);
     __device__ void walk(map *Dscaled_map);
     __device__ void walk_back(map *Dscaled_map);
 

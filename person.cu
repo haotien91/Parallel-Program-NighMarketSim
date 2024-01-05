@@ -15,6 +15,7 @@ __device__ person::person(int direction, pos position, int speed, preference p)
 __device__ int
 person::decide(map *Dscaled_map)
 {
+   // printf("%d %d %d\n",this->position.x ,this->position.y,this->p.heading);
     int choice = this->p.choose();
     switch (choice)
     {
@@ -79,7 +80,7 @@ person::is_walkable(map *Dscaled_map, pos position_check)
     {
         return REMOVE;
     }
-    if (Dscaled_map[C(position_check.x, position_check.y, MAP_SIZE)].vis == -1)
+    if (Dscaled_map[C(position_check.x, position_check.y, MAP_SIZE)].vis > 3)
         return WALKABLE;
     else
         return UNWALKABLE;

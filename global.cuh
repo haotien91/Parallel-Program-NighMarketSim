@@ -30,7 +30,7 @@
 #define PHASES 100
 #define C(i, j, k) (((j) * (k)) + (i))
 #define NUMOFPEOPLE 50
-#define LINEOFPEOPLE MAP_SIZE - 6
+#define LINEOFPEOPLE (MAP_SIZE - 6)
 
 class pos
 {
@@ -49,19 +49,21 @@ class preference
 {
 public:
     __device__ preference() { return; };
-    __device__ preference(int up, int down, int left, int right)
+    __device__ preference(int heading)
     {
-        this->up = up;
-        this->down = down;
-        this->left = left;
-        this->right = right;
+        this->heading = heading;
     };
 
-    int up;
-    int down;
-    int left;
-    int right;
     __device__ int choose();
+    __device__ void set_weight(int heading);
+    int heading ;
+    int heading_weights[4][4 ]= 
+    {
+        {90,2,4,4},
+        {2,90,4,4},
+        {4,4,90,2},
+        {4,4,2,90}
+    };
 };
 
 class person;
@@ -75,6 +77,7 @@ public:
         vis = 0;
     }
     int vis;
+    int original;
     person *buffer[4];
 };
 

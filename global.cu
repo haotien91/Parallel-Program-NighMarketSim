@@ -1,16 +1,25 @@
 #include "global.cuh"
 
+
+__device__ void preference::set_weight(int vis_val)
+{
+  
+    int new_heading  = vis_val - 4 ;  
+
+    this->heading = new_heading;
+    return ;
+}
 __device__ int preference::choose()
 {
     pos position((blockIdx.x * blockDim.x + threadIdx.x) , (blockIdx.y * blockDim.y + threadIdx.y) );
     // Define weighted probabilities for each direction
-    int weights[] = {this->up, this->down, this->left, this->right}; // Adjust these values for different weights
+    int * weights = this->heading_weights[this->heading]; // Adjust these values for different weights
 
     // Calculate total weight
     int totalWeight = 0;
-    for (int weight : weights)
+    for (int i = 0 ; i< 4; i++)
     {
-        totalWeight += weight;
+        totalWeight += weights[i];
     }
 
     // Generate a random number between 1 and total weight

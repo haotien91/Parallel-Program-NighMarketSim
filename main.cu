@@ -28,10 +28,10 @@ int main(int argc, char **argv)
         // test_write<<<grid, blk>>>(Playground->Dstreetmap, Playground->Dscaled_map, Playground->DOutputmap);// print Dscalemap
 
         run<<<grid, blk>>>(Playground->Dscaled_map);
-        // test_write<<<grid, blk>>>(Playground->Dstreetmap, Playground->Dscaled_map, Playground->DOutputmap);// print Dscalemap
+       // test_write<<<grid, blk>>>(Playground->Dstreetmap, Playground->Dscaled_map, Playground->DOutputmap);// print Dscalemap
 
         check<<<grid, blk>>>(Playground->Dscaled_map, Playground->DOutputmap);
-        // test_write<<<grid, blk>>>(Playground->Dstreetmap, Playground->Dscaled_map, Playground->DOutputmap); // print Dscalemap
+       // test_write<<<grid, blk>>>(Playground->Dstreetmap, Playground->Dscaled_map, Playground->DOutputmap); // print Dscalemap
 
         // For : when run finish a phase , trigger event
 

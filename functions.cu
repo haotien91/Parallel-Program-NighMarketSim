@@ -10,11 +10,11 @@ __device__ void scale_map(int * Dstreetmap,map * Dscaled_map,pos position)
 
     if (Dstreetmap[C(inp_x, inp_y, MAP_SIZE / SCALE_SIZE)] == 0) // obstacles
     {
-        Dscaled_map[C(scale_x,scale_y,MAP_SIZE)].vis = OBSTACLES;
+        Dscaled_map[C(scale_x, scale_y, MAP_SIZE)].original = Dscaled_map[C(scale_x,scale_y,MAP_SIZE)].vis = OBSTACLES;
     }
     else
     {
-        Dscaled_map[C(scale_x, scale_y, MAP_SIZE)].vis = Dstreetmap[C(inp_x, inp_y, MAP_SIZE / SCALE_SIZE)];    // put in grad
+        Dscaled_map[C(scale_x, scale_y, MAP_SIZE)].original = Dscaled_map[C(scale_x, scale_y, MAP_SIZE)].vis = Dstreetmap[C(inp_x, inp_y, MAP_SIZE / SCALE_SIZE)];    // put in grad
     }
 
     return;
@@ -46,7 +46,7 @@ __global__ void set(int * Dstreetmap,map * Dscaled_map)
          // should set people 
 
         int direction = LEFT;
-        preference prefer(4, 4, 90, 2);
+        preference prefer(direction);
         // prefer.set_preference(4,4,90,2);
 
         p = new person(direction,position,1,prefer);
@@ -86,7 +86,7 @@ __global__ void run(map * Dscaled_map)
     pos position((blockIdx.x * blockDim.x + threadIdx.x) , (blockIdx.y * blockDim.y + threadIdx.y) );
     
     // walk 
-    if(Dscaled_map[C(position.x,position.y,MAP_SIZE)].vis > -1 && !Dscaled_map[C(position.x, position.y, MAP_SIZE)].buffer[Dscaled_map[C(position.x, position.y, MAP_SIZE)].vis]->oob )
+    if(Dscaled_map[C(position.x,position.y,MAP_SIZE)].vis > -1 && Dscaled_map[C(position.x,position.y,MAP_SIZE)].vis < UP_GRAD && !Dscaled_map[C(position.x, position.y, MAP_SIZE)].buffer[Dscaled_map[C(position.x, position.y, MAP_SIZE)].vis]->oob )
     {
         // have person 
         Dscaled_map[C(position.x,position.y,MAP_SIZE)].buffer[Dscaled_map[C(position.x,position.y,MAP_SIZE)].vis]->walk(Dscaled_map);
@@ -102,12 +102,12 @@ __global__ void check(map * Dscaled_map,int * DOutput_map)
     map location = Dscaled_map[C(position.x,position.y,MAP_SIZE)];
 
     // walk 
-    if(location.vis > -1)
+    if(location.vis > -1 && location.vis < UP_GRAD)
     {
         if(location.buffer[location.vis]->oob)
         {
             delete location.buffer[location.vis];
-            location.vis = -1;
+            location.vis = location.original;
         }
         else
         {
@@ -128,13 +128,13 @@ __global__ void check(map * Dscaled_map,int * DOutput_map)
                     else
                     {
                         location.buffer[i] = NULL;
-                        location.vis = -1;
+                        location.vis = location.original;
                     }
                 }
             }
             if(all_null)
             {
-                location.vis = -1;
+                location.vis = location.original;
             }
             if (counter > 0)
             {
@@ -164,12 +164,16 @@ __global__ void check(map * Dscaled_map,int * DOutput_map)
                         else
                         {
                             location.buffer[i]->position = location.buffer[i]->next_position;
+                            location.buffer[i]->p.set_weight(location.original);
                             location.vis = i;
+                            
                         }
                     }
                 }
             }
         }
+        
+        
         
         Dscaled_map[C(position.x, position.y, MAP_SIZE)] = location;
     }

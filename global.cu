@@ -39,15 +39,15 @@ __device__ int preference::choose()
     ; // NEED TO CHANGE
 
     // Choose a direction based on weighted probabilities
-    if (randomNum <= weights[0])
+    if (randomNum < weights[0])
     {
         return UP; // Up
     }
-    else if (randomNum <= weights[0] + weights[1])
+    else if (randomNum < weights[0] + weights[1])
     {
         return DOWN; // Down
     }
-    else if (randomNum <= weights[0] + weights[1] + weights[2])
+    else if (randomNum < weights[0] + weights[1] + weights[2])
     {
         return LEFT; // Left
     }

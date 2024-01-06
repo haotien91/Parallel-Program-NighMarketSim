@@ -57,12 +57,12 @@ public:
     __device__ int choose();
     __device__ void set_weight(int heading);
     int heading ;
-    int heading_weights[4][4 ]= 
+    int heading_weights[4][4]= 
     {
-        {100,0,0,0},
-        {0,100,0,0},
-        {0,0,100,0},
-        {0,0,0,100}
+        {90,2,4,4},
+        {2,90,4,4},
+        {4,4,90,2},
+        {4,4,2,90}
     };
 };
 
